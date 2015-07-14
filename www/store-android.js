@@ -888,6 +888,7 @@ store.verbosity = 0;
                     price: validProducts[i].price,
                     description: validProducts[i].description,
                     currency: validProducts[i].price_currency_code,
+                    localizedPrice: validProducts[i].price,
                     state: store.VALID
                 });
                 p.trigger("loaded");

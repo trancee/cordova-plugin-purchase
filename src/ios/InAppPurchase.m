@@ -303,6 +303,7 @@ unsigned char* unbase64( const char* ascii, int len, int *flen )
         [[SKPaymentQueue defaultQueue]  addTransactionObserver:self];
         observer = self;
     }
+	[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"InAppPurchase initialized"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -622,7 +623,7 @@ static NSString *rootAppleCA = @"MIIEuzCCA6OgAwIBAgIBAjANBgkqhkiG9w0BAQUFADBiMQs
 - (void) appStoreRefreshReceipt: (CDVInvokedUrlCommand*)command {
     DLog(@"Request to refresh app receipt");
     RefreshReceiptDelegate* delegate = [[RefreshReceiptDelegate alloc] init];
-    SKReceiptRefreshRequest* recreq = [[SKReceiptRefreshRequest alloc] init];
+    SKReceiptRefreshRequest* recreq = [[SKReceiptRefreshRequest alloc] initWithReceiptProperties:nil];
     recreq.delegate = delegate;
     delegate.plugin  = self;
     delegate.command = command;
@@ -726,7 +727,9 @@ static NSString *rootAppleCA = @"MIIEuzCCA6OgAwIBAgIBAjANBgkqhkiG9w0BAQUFADBiMQs
           NILABLE(product.productIdentifier),    @"id",
           NILABLE(product.localizedTitle),       @"title",
           NILABLE(product.localizedDescription), @"description",
-          NILABLE(product.localizedPrice),       @"price",
+          NILABLE(product.localizedPrice),       @"localizedPrice",
+          NILABLE(product.price),                @"price",
+          NILABLE(product.currencyCode),         @"currency",
           nil]];
         [self.plugin.list setObject:product forKey:[NSString stringWithFormat:@"%@", product.productIdentifier]];
     }
